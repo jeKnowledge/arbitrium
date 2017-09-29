@@ -55,7 +55,7 @@ def get_random(index):
     data = sheet.get_all_values()
     while '' in data[index]:
         data[index].remove('')
-    random_numbers = get_random_numbers(data[index] - 1)
+    random_numbers = get_random_numbers(len(data[index]) - 1)
     res = [data[index][random_numbers[0]], data[index][random_numbers[1]], data[index][random_numbers[2]]]
     return res
 
