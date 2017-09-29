@@ -22,6 +22,7 @@ def atividade(message):
     message.reply(res)
     message.react('runner')
 
+
 @listen_to('Movie pls', re.IGNORECASE)
 def movie(message):
     movies = urllib.request.urlopen("https://api.themoviedb.org/3/movie/top_rated?api_key=c8b4056e98d6d3065ed391c8dc1832a2&language=en-US&page=1").read().decode('utf8')
@@ -29,6 +30,7 @@ def movie(message):
     movie = movies[random.randint(0, 19)]["title"]
     message.reply(movie)
     message.react('clapper')
+
 
 def get_random(index):
     scope = ['https://spreadsheets.google.com/feeds']
