@@ -25,7 +25,7 @@ def atividade(message):
 
 @listen_to('jeK fat?', re.IGNORECASE)
 def restaurante(message):
-    res = get_random(3)
+    res = get_random(2)
     message.reply(res)
     message.react('fork_and_knife')
 
@@ -45,6 +45,8 @@ def get_random(index):
     client = gspread.authorize(creds)
     sheet = client.open('Arbitrium Test').sheet1
     data = sheet.get_all_values()
+    while '' in data[index]:
+        data[index].remove('')
     res = data[index][random.randint(0, len(data[index]) - 1)]
     return res
 
