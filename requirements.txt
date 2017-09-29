@@ -1,0 +1,15 @@
+certifi==2017.7.27.1
+chardet==3.0.4
+Flask==0.10.1
+gunicorn==19.4.5
+idna==2.6
+itsdangerous==0.24
+Jinja2==2.9.6
+MarkupSafe==1.0
+requests==2.18.4
+six==1.11.0
+slackbot==0.5.1
+slacker==0.9.60
+urllib3==1.22
+websocket-client==0.44.0
+Werkzeug==0.12.2
