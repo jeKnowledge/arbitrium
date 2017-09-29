@@ -9,18 +9,25 @@ import gspread
 import random
 
 
-@listen_to('Restaurante pls', re.IGNORECASE)
+@listen_to('take me drunk im home', re.IGNORECASE)
 def restaurante(message):
     res = get_random(0)
     message.reply(res)
-    message.react('fork_and_knife')
+    message.react('beer')
 
 
-@listen_to('Atividade pls', re.IGNORECASE)
+@listen_to('jeK fit?', re.IGNORECASE)
 def atividade(message):
     res = get_random(1)
     message.reply(res)
     message.react('runner')
+
+
+@listen_to('jeK fat?', re.IGNORECASE)
+def restaurante(message):
+    res = get_random(3)
+    message.reply(res)
+    message.react('fork_and_knife')
 
 
 @listen_to('Movie pls', re.IGNORECASE)
