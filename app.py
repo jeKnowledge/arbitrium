@@ -39,11 +39,12 @@ def restaurante(message):
 
 @listen_to('Movie pls', re.IGNORECASE)
 def movie(message):
-    message.react('clapper')
-    movies = urllib.request.urlopen("https://api.themoviedb.org/3/movie/top_rated?api_key=c8b4056e98d6d3065ed391c8dc1832a2&language=en-US&page=1").read().decode('utf8')
+    #message.react('clapper')
+    myopener = MyOpener()
+    movies = myopener.open("https://api.themoviedb.org/3/movie/top_rated?api_key=c8b4056e98d6d3065ed391c8dc1832a2&language=en-US&page=1").read().decode('utf8')
     movies = json.loads(movies)["results"]
     random_numbers = get_random_numbers(19)
-    process(movies[random_numbers[0]]["title"], movies[random_numbers[1]]["title"], movies[random_numbers[2]]["title"])
+    process([movies[random_numbers[0]]["title"], movies[random_numbers[1]]["title"], movies[random_numbers[2]]["title"]])
 
 
 def get_random(index):
@@ -109,7 +110,6 @@ def get_number_of_reactions(timestamp):
             number_of_reactions += reactions[i]["count"]
         return number_of_reactions
     except:
-        print("nada")
         return 0
 
 
