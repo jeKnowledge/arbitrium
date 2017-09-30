@@ -107,7 +107,6 @@ def get_number_of_reactions(timestamp):
         number_of_reactions = 0
         for i in range(len(reactions)):
             number_of_reactions += reactions[i]["count"]
-        print(number_of_reactions)
         return number_of_reactions
     except:
         print("nada")
@@ -121,7 +120,7 @@ def get_most_voted(options):
         if options[i] > maximum_votes:
             most_voted = options[i]
             most_voted_options = [i]
-        elif options[i] >= maximum_votes:
+        elif options[i] == maximum_votes:
             most_voted_options.append(i)
     return most_voted_options
 
