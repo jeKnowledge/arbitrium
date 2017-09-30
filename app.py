@@ -3,13 +3,17 @@ from slackbot.bot import respond_to
 from slackbot.bot import listen_to
 from oauth2client.service_account import ServiceAccountCredentials
 import os
-import urllib.request
+from urllib.request import FancyURLopener
 import re
 import json
 import gspread
 import random
 import time
 import slackbot_settings
+
+
+class MyOpener(FancyURLopener):
+    version = 'My new User-Agent'
 
 
 @listen_to('take me drunk im home', re.IGNORECASE)
@@ -86,14 +90,16 @@ def get_random_numbers(limit):
 
 def post_message_as_slackbot(message, return_ts):
     print(message)
-    message_sent = urllib.request.urlopen("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
+    myopener = MyOpener()
+    message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
     if return_ts:
         timestamp = json.loads(message_sent.decode('utf8'))["message"]["ts"]
         return timestamp
 
 
 def get_number_of_reactions(timestamp):
-    message = urllib.request.urlopen("https://slack.com/api/reactions.get?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&timestamp=" + timestamp + "&pretty=1").read()
+    myopener = MyOpener()
+    message_sent = myopener.open("https://slack.com/api/reactions.get?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&timestamp=" + timestamp + "&pretty=1").read()
     try:
         reactions = json.loads(message.decode('utf8'))["message"]["reactions"]
         number_of_reactions = 0
