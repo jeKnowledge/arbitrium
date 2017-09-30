@@ -18,52 +18,32 @@ class MyOpener(FancyURLopener):
 
 @listen_to('take me drunk im home', re.IGNORECASE)
 def restaurante(message):
-    res = get_random(0)
-    message.reply(res[0])
-    message.reply(res[1])
-    message.reply(res[2])
     message.react('beer')
-    time.sleep(5)
-    message.reply("Waited 5 seconds")
+    res = get_random(0)
+    process(res)
 
 
 @listen_to('jeK fit?', re.IGNORECASE)
 def atividade(message):
+    message.react('runner')
     res = get_random(1)
-    first_ts = post_message_as_slackbot(res[0], 1)
-    second_ts = post_message_as_slackbot(res[1], 1)
-    third_ts = post_message_as_slackbot(res[2], 1)
-    time.sleep(10)
-    activities_indexes = get_most_voted([get_number_of_reactions(first_ts), get_number_of_reactions(second_ts), get_number_of_reactions(third_ts)])
-    if len(activities_indexes) == 0:
-        post_message_as_slackbot("You didn't vote. Shame", 0)
-    elif len(activities_indexes) == 1:
-        post_message_as_slackbot("The most voted option was " + res[activities_indexes[0]], 0)
-    else:
-        text = res[activities_indexes[0]]
-        for i in range(len(activities_indexes)):
-            text += "and " + res[activities_indexes[i]]
-        post_message_as_slackbot("TIE between " + ".So I choose: ", 0)
+    process(res)
 
 
 @listen_to('jeK fat?', re.IGNORECASE)
 def restaurante(message):
-    res = get_random(2)
-    message.reply(res[0])
-    message.reply(res[1])
-    message.reply(res[2])
     message.react('fork_and_knife')
+    res = get_random(2)
+    process(res)
 
 
 @listen_to('Movie pls', re.IGNORECASE)
 def movie(message):
+    message.react('clapper')
     movies = urllib.request.urlopen("https://api.themoviedb.org/3/movie/top_rated?api_key=c8b4056e98d6d3065ed391c8dc1832a2&language=en-US&page=1").read().decode('utf8')
     movies = json.loads(movies)["results"]
     random_numbers = get_random_numbers(19)
-    message.reply(movies[random_numbers[0]]["title"])
-    message.reply(movies[random_numbers[1]]["title"])
-    message.reply(movies[random_numbers[2]]["title"])
-    message.react('clapper')
+    process(movies[random_numbers[0]]["title"], movies[random_numbers[1]]["title"], movies[random_numbers[2]]["title"])
 
 
 def get_random(index):
@@ -79,6 +59,28 @@ def get_random(index):
     return res
 
 
+def process(res):
+    post_message_as_slackbot("React to choose!! @channel", 0)
+    first_ts = post_message_as_slackbot(res[0], 1)
+    second_ts = post_message_as_slackbot(res[1], 1)
+    third_ts = post_message_as_slackbot(res[2], 1)
+    time.sleep(30)
+
+    activities_indexes = get_most_voted([get_number_of_reactions(first_ts), get_number_of_reactions(second_ts), get_number_of_reactions(third_ts)])
+    if len(activities_indexes) == 0:
+        post_message_as_slackbot("You didn't vote. Shame. I choose " + res[random.randint(0, 2)], 0)
+
+    elif len(activities_indexes) == 1:
+        post_message_as_slackbot("The most voted option was " + res[activities_indexes[0]], 0)
+
+    else:
+        text = res[activities_indexes[0]]
+        for i in range(1, len(activities_indexes)):
+            text += " and " + res[activities_indexes[i]]
+        random_choice = res[activities_indexes[random.randint(0, len(activities_indexes) - 1)]]
+        post_message_as_slackbot("TIE between " + text + ". So I choose: " + random_choice, 0)
+
+
 def get_random_numbers(limit):
     numbers = []
     while len(numbers) != 3:
@@ -89,7 +91,6 @@ def get_random_numbers(limit):
 
 
 def post_message_as_slackbot(message, return_ts):
-    print(message)
     myopener = MyOpener()
     message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
     if return_ts:
@@ -100,13 +101,16 @@ def post_message_as_slackbot(message, return_ts):
 def get_number_of_reactions(timestamp):
     myopener = MyOpener()
     message_sent = myopener.open("https://slack.com/api/reactions.get?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&timestamp=" + timestamp + "&pretty=1").read()
+    print(message_sent)
     try:
-        reactions = json.loads(message.decode('utf8'))["message"]["reactions"]
+        reactions = json.loads(message_sent.decode('utf8'))["message"]["reactions"]
         number_of_reactions = 0
         for i in range(len(reactions)):
             number_of_reactions += reactions[i]["count"]
+        print(number_of_reactions)
         return number_of_reactions
     except:
+        print("nada")
         return 0
 
 
