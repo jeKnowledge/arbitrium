@@ -118,7 +118,7 @@ def get_most_voted(options):
     most_voted_options = []
     for i in range(len(options)):
         if options[i] > maximum_votes:
-            most_voted = options[i]
+            maximum_votes = options[i]
             most_voted_options = [i]
         elif options[i] == maximum_votes:
             most_voted_options.append(i)
