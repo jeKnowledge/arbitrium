@@ -102,7 +102,6 @@ def post_message_as_slackbot(message, return_ts):
 def get_number_of_reactions(timestamp):
     myopener = MyOpener()
     message_sent = myopener.open("https://slack.com/api/reactions.get?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&timestamp=" + timestamp + "&pretty=1").read()
-    print(message_sent)
     try:
         reactions = json.loads(message_sent.decode('utf8'))["message"]["reactions"]
         number_of_reactions = 0
