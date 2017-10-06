@@ -2,8 +2,8 @@ from slackbot.bot import Bot
 from slackbot.bot import respond_to
 from slackbot.bot import listen_to
 from oauth2client.service_account import ServiceAccountCredentials
-import os
 from urllib.request import FancyURLopener
+import os
 import re
 import json
 import gspread
