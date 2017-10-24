@@ -17,13 +17,7 @@ class MyOpener(FancyURLopener):
 
 @listen_to('help', re.IGNORECASE)
 def help(message):
-    message = "WRITE\n" +
-                "take me drunk im home - restaurants for parties\n" +
-                "jeK fit? - activities for make jeK fit\n" +
-                "jeK fat? - restaurants for make jeK dat\n" +
-                "movie? - movies from spread\n" +
-                "best movies pls - best movies today\n +
-                "\nThen you have an hour to vote. I will say who won."
+    message = "WRITE\ntake me drunk im home - restaurants for parties\njeK fit? - activities for make jeK fit\njeK fat? - restaurants for make jeK dat\nmovie? - movies from spread\nbest movies pls - best movies today\nThen you have an hour to vote. I will say who won."
     myopener = MyOpener()
     message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
 
