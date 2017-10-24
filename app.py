@@ -16,7 +16,7 @@ class MyOpener(FancyURLopener):
     version = 'My new User-Agent'
 
 @listen_to('help', re.IGNORECASE)
-def restaurante_drink(message):
+def help(message):
     message = "WRITE\n" +
                 "take me drunk im home - restaurants for parties\n" +
                 "jeK fit? - activities for make jeK fit\n" +
@@ -28,8 +28,8 @@ def restaurante_drink(message):
     message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
 
 
-@listen_to('take me drunk im home', re.IGNORECASE)
-def restaurante_drink(message):
+@listen_to('take me drunk im home', re.IGNORECASE)def restaurante(message):
+def restaurante_drunk(message):
     message.react('beer')
     res = get_random(0)
     process(res)
@@ -50,7 +50,7 @@ def restaurante(message):
 
 
 @listen_to('movie?', re.IGNORECASE)
-def restaurante(message):
+def r(message):
     message.react('clapper')
     res = get_random(3)
     process(res)
