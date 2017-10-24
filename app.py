@@ -22,7 +22,7 @@ def help(message):
     message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
 
 
-@listen_to('take me drunk im home', re.IGNORECASE)def restaurante(message):
+@listen_to('take me drunk im home', re.IGNORECASE)
 def restaurante_drunk(message):
     message.react('beer')
     res = get_random(0)
