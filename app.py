@@ -15,9 +15,21 @@ import slackbot_settings
 class MyOpener(FancyURLopener):
     version = 'My new User-Agent'
 
+@listen_to('help', re.IGNORECASE)
+def restaurante_drink(message):
+    message = "WRITE\n" +
+                "take me drunk im home - restaurants for parties\n" +
+                "jeK fit? - activities for make jeK fit\n" +
+                "jeK fat? - restaurants for make jeK dat\n" +
+                "movie? - movies from spread\n" +
+                "best movies pls - best movies today\n +
+                "\nThen you have an hour to vote. I will say who won."
+    myopener = MyOpener()
+    message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
+
 
 @listen_to('take me drunk im home', re.IGNORECASE)
-def restaurante(message):
+def restaurante_drink(message):
     message.react('beer')
     res = get_random(0)
     process(res)
@@ -37,9 +49,16 @@ def restaurante(message):
     process(res)
 
 
-@listen_to('Movie pls', re.IGNORECASE)
+@listen_to('movie?', re.IGNORECASE)
+def restaurante(message):
+    message.react('clapper')
+    res = get_random(3)
+    process(res)
+
+
+@listen_to('best movies pls', re.IGNORECASE)
 def movie(message):
-    #message.react('clapper')
+    message.react('clapper')
     myopener = MyOpener()
     movies = myopener.open("https://api.themoviedb.org/3/movie/top_rated?api_key=c8b4056e98d6d3065ed391c8dc1832a2&language=en-US&page=1").read().decode('utf8')
     movies = json.loads(movies)["results"]
@@ -65,7 +84,7 @@ def process(res):
     first_ts = post_message_as_slackbot(res[0], 1)
     second_ts = post_message_as_slackbot(res[1], 1)
     third_ts = post_message_as_slackbot(res[2], 1)
-    time.sleep(30)
+    time.sleep(3600)
 
     activities_indexes = get_most_voted([get_number_of_reactions(first_ts), get_number_of_reactions(second_ts), get_number_of_reactions(third_ts)])
     if len(activities_indexes) == 0:
