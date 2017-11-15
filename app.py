@@ -15,42 +15,22 @@ import slackbot_settings
 class MyOpener(FancyURLopener):
     version = 'My new User-Agent'
 
-@listen_to('help', re.IGNORECASE)
+
+@listen_to(slackbot_settings.HELP_TRIGGER, re.IGNORECASE)
 def help(message):
-    message = "WRITE\ntake me drunk im home - restaurants for parties\njeK fit? - activities for make jeK fit\njeK fat? - restaurants for make jeK dat\nmovie? - movies from spread\nbest movies pls - best movies today\nThen you have an hour to vote. I will say who won."
+    message = slackbot_settings.HELP_MESSAGE
     myopener = MyOpener()
     message_sent = myopener.open("http://slack.com/api/chat.postMessage?token=" + slackbot_settings.API_TOKEN + "&channel=C7AULM2BW&text=" + message + "&as_user=true").read()
 
 
-@listen_to('take me drunk im home', re.IGNORECASE)
-def restaurante_drunk(message):
-    message.react('beer')
-    res = get_random(0)
-    process(res)
+for i in range(len(slackbot_settings.MESSAGES)):
+    @listen_to(slackbot_settings.MESSAGES[i][0], re.IGNORECASE)
+    def restaurante_drunk(message):
+        message.react(slackbot_settings.MESSAGES[i][1])
+        res = get_random(slackbot_settings.MESSAGES[i][2])
+        process(res)
 
-
-@listen_to('jeK fit?', re.IGNORECASE)
-def atividade(message):
-    message.react('runner')
-    res = get_random(1)
-    process(res)
-
-
-@listen_to('jeK fat?', re.IGNORECASE)
-def restaurante(message):
-    message.react('fork_and_knife')
-    res = get_random(2)
-    process(res)
-
-
-@listen_to('movie?', re.IGNORECASE)
-def r(message):
-    message.react('clapper')
-    res = get_random(3)
-    process(res)
-
-
-@listen_to('best movies pls', re.IGNORECASE)
+@listen_to(slackbot_settings.BEST_MOVIES_MESSAGE, re.IGNORECASE)
 def movie(message):
     message.react('clapper')
     myopener = MyOpener()
