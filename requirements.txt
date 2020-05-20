@@ -4,7 +4,7 @@ click==6.7
 Flask==0.10.1
 gspread==0.6.2
 gunicorn==19.4.5
-httplib2==0.10.3
+httplib2==0.18.0
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
